@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Nilai Mahasiswa</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f0f0f0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 50px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        background-color: #2d4bc3;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      #hasil {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Form Input Nilai Mahasiswa</h1>
+      <form id="studentForm">
+        <label for="nim">NIM:</label>
+        <input type="text" id="nim" name="nim" required />
+
+        <label for="nama">Nama:</label>
+        <input type="text" id="nama" name="nama" required />
+
+        <label for="mataKuliah">Mata Kuliah:</label>
+        <select id="mataKuliah" name="mataKuliah" required>
+          <option value="Kalkulus 2">Kalkulus 2</option>
+          <option value="Diskrit 1">Diskrit 1</option>
+          <option value="Sistem Operasi">Sistem Operasi</option>
+          <option value="Pendidikan Pancasila">Pendidikan Pancasila</option>
+          <option value="Algoritma">Algoritma</option>
+          <option value="Desain perangkat lunak">Desain perangkat lunak</option>
+          <option value="Praktik  pemrograman">Praktik pemrograman</option>
+          <option value="Arsitektur komputer">Arsitektur komputer</option>
+          <option value="Bahasa Inggris">Bahasa Inggris</option>
+          <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+        </select>
+
+        <label for="nilaiAkhir">Nilai Akhir:</label>
+        <input type="number" id="nilaiAkhir" name="nilaiAkhir" required />
+
+        <button type="button" id="tampil">TAMPIL</button>
+        <button type="reset" id="reset">RESET</button>
+      </form>
+      <div id="hasil" class="hidden"></div>
+      <div id="arrayLink"></div>
+    </div>
+
+    <script>
+      document.getElementById("tampil").addEventListener("click", function () {
+        const nim = document.getElementById("nim").value;
+        const nama = document.getElementById("nama").value;
+        const mataKuliah = document.getElementById("mataKuliah").value;
+        let nilaiAkhir = parseFloat(
+          document.getElementById("nilaiAkhir").value
+        );
+
+        // Validasi jika nilai lebih dari 100 atau kurang dari 0
+        if (nilaiAkhir > 100 || nilaiAkhir < 0 || isNaN(nilaiAkhir)) {
+          alert("Nilai tidak valid. Pastikan nilai antara 0 dan 100.");
+          return; // Menghentikan eksekusi fungsi lebih lanjut
+        }
+
+        let nilaiHuruf, indeksNilai, keterangan;
+
+        if (nilaiAkhir >= 85) {
+          nilaiHuruf = "A";
+          indeksNilai = 4.0;
+          keterangan = "Pujian";
+        } else if (nilaiAkhir >= 79) {
+          nilaiHuruf = "A-";
+          indeksNilai = 3.67;
+          keterangan = "Sangat Memuaskan";
+        } else if (nilaiAkhir >= 74) {
+          nilaiHuruf = "B+";
+          indeksNilai = 3.33;
+          keterangan = "Sangat Memuaskan";
+        } else if (nilaiAkhir >= 69) {
+          nilaiHuruf = "B";
+          indeksNilai = 3.0;
+          keterangan = "Memuaskan";
+        } else if (nilaiAkhir >= 64) {
+          nilaiHuruf = "B-";
+          indeksNilai = 2.67;
+          keterangan = "Memuaskan";
+        } else if (nilaiAkhir >= 59) {
+          nilaiHuruf = "C+";
+          indeksNilai = 2.33;
+          keterangan = "-";
+        } else if (nilaiAkhir >= 54) {
+          nilaiHuruf = "C";
+          indeksNilai = 2.0;
+          keterangan = "-";
+        } else if (nilaiAkhir >= 41) {
+          nilaiHuruf = "D";
+          indeksNilai = 1.0;
+          keterangan = "-";
+        } else {
+          nilaiHuruf = "E";
+          indeksNilai = 0.0;
+          keterangan = "-";
+        }
+
+        const hasil = `
+          <h2>Hasil Input</h2>
+          <p>NIM: ${nim}</p>
+          <p>Nama: ${nama}</p>
+          <p>Mata Kuliah: ${mataKuliah}</p>
+          <p>Nilai Akhir: ${nilaiAkhir}</p>
+          <p>Nilai Huruf: ${nilaiHuruf}</p>
+          <p>Indeks Nilai: ${indeksNilai}</p>
+          <p>Keterangan: ${keterangan}</p>
+        `;
+
+        document.getElementById("hasil").innerHTML = hasil;
+      });
+
+      document.getElementById("reset").addEventListener("click", function () {
+        document.getElementById("hasil").innerHTML = "";
+      });
+    </script>
+  </body>
+</html>
